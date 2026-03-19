@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
+  const [scrolled, setScrolled] = useState(typeof window !== 'undefined' && window.scrollY > 40)
   const [open, setOpen] = useState(false)
   const loc = useLocation()
 
