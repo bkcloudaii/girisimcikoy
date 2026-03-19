@@ -1,7 +1,16 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { BusScene, VillageExploreScene, EveningPresentScene, TractorScene } from '../components/SceneIllustration'
+
+// Unsplash görselleri — köy, girişimcilik, Anadolu temalı
+const IMGS = {
+  hero:     'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1920&q=80',
+  bus:      'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=900&q=80',
+  village:  'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=900&q=80',
+  tractor:  'https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=900&q=80',
+  present:  'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=900&q=80',
+  trailer:  'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1280&q=80',
+}
 
 const steps = [
   { num: '01', icon: '🚌', title: 'Otobüse Bin', desc: 'Seçilen girişimciler "Girişimci Köy" yazılı otobüse biner. Hedef: önceden ya da halk oylamasıyla belirlenen bir Anadolu köyü.' },
@@ -34,13 +43,12 @@ export default function Home() {
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* BG */}
-        <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900 to-black"/>
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-red/10 via-transparent to-brand-village/10"/>
-        {/* Bus illustration */}
-        <div className="absolute right-0 bottom-0 w-full md:w-2/3 opacity-30 md:opacity-50 pointer-events-none">
-          <BusScene />
+        {/* BG Photo */}
+        <div className="absolute inset-0">
+          <img src={IMGS.hero} alt="Anadolu köyü" className="w-full h-full object-cover object-center"/>
         </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"/>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30"/>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20">
           <div className="max-w-3xl">
@@ -74,18 +82,15 @@ export default function Home() {
             <span className="section-tag mb-3 block">Tanıtım Filmi</span>
             <h2 className="font-display text-5xl md:text-6xl text-white">FRAGMANI İZLE</h2>
           </div>
-          <div ref={addReveal} className="reveal relative max-w-4xl mx-auto aspect-video bg-zinc-900 rounded-none overflow-hidden border border-zinc-800 group cursor-pointer">
-            {/* YouTube placeholder — ID buraya gelecek */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <EveningPresentScene/>
-              <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-all"/>
-              <div className="absolute flex flex-col items-center gap-4">
-                <div className="w-20 h-20 bg-brand-red rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl shadow-brand-red/40">
-                  <span className="text-3xl ml-1">▶</span>
-                </div>
-                <span className="text-white font-display text-2xl tracking-widest">GİRİŞİMCİ KÖY TANITIM</span>
-                <span className="text-zinc-400 text-sm uppercase tracking-widest">Fragman yakında yayında</span>
+          <div ref={addReveal} className="reveal relative max-w-4xl mx-auto aspect-video rounded-none overflow-hidden border border-zinc-800 group cursor-pointer">
+            <img src={IMGS.trailer} alt="Girişimci Köy Tanıtım" className="w-full h-full object-cover"/>
+            <div className="absolute inset-0 bg-black/60 group-hover:bg-black/40 transition-all"/>
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+              <div className="w-20 h-20 bg-brand-red rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-2xl shadow-brand-red/40">
+                <span className="text-3xl ml-1">▶</span>
               </div>
+              <span className="text-white font-display text-2xl tracking-widest">GİRİŞİMCİ KÖY TANITIM</span>
+              <span className="text-zinc-400 text-sm uppercase tracking-widest">Fragman yakında yayında</span>
             </div>
           </div>
         </div>
@@ -124,34 +129,23 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div ref={addReveal} className="reveal scene-card aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-brand-red/50 transition-all">
-              <BusScene />
-              <div className="p-4 bg-zinc-950">
-                <h3 className="font-display text-xl text-white">Yola Çıkış</h3>
-                <p className="text-zinc-500 text-sm">Girişimci Köy otobüsü dağları, bayırları, sahilleri aşarak köye ulaşıyor.</p>
+            {[
+              { img: IMGS.bus,     title: 'Yola Çıkış',              desc: 'Girişimci Köy otobüsü dağları, bayırları, sahilleri aşarak köye ulaşıyor.' },
+              { img: IMGS.village, title: 'Köy Keşfi',               desc: 'Gruplar köylüyle tanışıyor, sorunları dinliyor, çocuklarla birlikte geziyor.' },
+              { img: IMGS.tractor, title: 'Tarlada Bilgi Toplama',   desc: 'Amcayla traktörde, teyzeyle gözleme tavasında... Gerçeği bulmak için her yerde.' },
+              { img: IMGS.present, title: 'Köy Meydanında Sunum',    desc: 'Otobüsün yanından kurulan sahne, köylü jürisi, meydan dolusu seyirci.' },
+            ].map((s, i) => (
+              <div key={i} ref={addReveal} className="reveal overflow-hidden border border-zinc-800 hover:border-brand-red/50 transition-all group">
+                <div className="relative aspect-video overflow-hidden">
+                  <img src={s.img} alt={s.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"/>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"/>
+                </div>
+                <div className="p-4 bg-zinc-950">
+                  <h3 className="font-display text-xl text-white group-hover:text-brand-red transition-colors">{s.title}</h3>
+                  <p className="text-zinc-500 text-sm mt-1">{s.desc}</p>
+                </div>
               </div>
-            </div>
-            <div ref={addReveal} className="reveal scene-card aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-brand-red/50 transition-all">
-              <VillageExploreScene />
-              <div className="p-4 bg-zinc-950">
-                <h3 className="font-display text-xl text-white">Köy Keşfi</h3>
-                <p className="text-zinc-500 text-sm">Gruplar köylüyle tanışıyor, sorunları dinliyor, çocuklarla birlikte geziyor.</p>
-              </div>
-            </div>
-            <div ref={addReveal} className="reveal scene-card aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-brand-red/50 transition-all">
-              <TractorScene />
-              <div className="p-4 bg-zinc-950">
-                <h3 className="font-display text-xl text-white">Tarlada Bilgi Toplama</h3>
-                <p className="text-zinc-500 text-sm">Amcayla traktörde, teyzeyle gözleme tavasında... Gerçeği bulmak için her yerde.</p>
-              </div>
-            </div>
-            <div ref={addReveal} className="reveal scene-card aspect-video bg-zinc-900 overflow-hidden border border-zinc-800 hover:border-brand-red/50 transition-all">
-              <EveningPresentScene />
-              <div className="p-4 bg-zinc-950">
-                <h3 className="font-display text-xl text-white">Köy Meydanında Sunum</h3>
-                <p className="text-zinc-500 text-sm">Otobüsün yanından kurulan sahne, köylü jürisi, meydan dolusu seyirci.</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
